@@ -26,7 +26,7 @@ types.forEach(async (type, index) => {
       method: "GET",
       url: `http://www.a-zcompanies.com/${type}-${index + 1}.html`,
     },
-    (err, res, body) => {
+    async (err, res, body) => {
       if (err) return console.error(err);
       let $ = cheerio.load(body);
       let anchors = [];
@@ -34,7 +34,7 @@ types.forEach(async (type, index) => {
         anchors.push($(this).text());
       });
 
-      anchors.forEach(async (company) => {
+      await anchors.forEach(async (company) => {
         if (company[0] == "»")
           await fs.appendFile(`${type}.txt`, company.slice(1) + "\n", () => {});
       });
